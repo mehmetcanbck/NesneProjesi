@@ -1,0 +1,48 @@
+@model Yapaydeneme.Models.Kategori
+
+@{
+    ViewData["Title"] = "Kategori Sil";
+}
+
+<div class="container">
+    <h1>Kategori Sil</h1>
+    <h3>Bu kategoriyi silmek istediğinizden emin misiniz?</h3>
+    
+    <div class="alert alert-warning">
+        <strong>Uyarı!</strong> Bu kategoriyi sildiğinizde, kategoriye ait tüm ürünler de silinecektir.
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="row">
+                <dt class="col-sm-4">Kategori Adı</dt>
+                <dd class="col-sm-8">@Model.KategoriAdi</dd>
+
+                <dt class="col-sm-4">Açıklama</dt>
+                <dd class="col-sm-8">@Model.Aciklama</dd>
+
+                <dt class="col-sm-4">Ürün Sayısı</dt>
+                <dd class="col-sm-8">@(Model.Urunler?.Count ?? 0)</dd>
+            </dl>
+
+            @if (Model.Urunler != null && Model.Urunler.Any())
+            {
+                <div class="alert alert-info">
+                    <h5>Bu kategorideki ürünler:</h5>
+                    <ul>
+                        @foreach (var urun in Model.Urunler)
+                        {
+                            <li>@urun.UrunAdi</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            <form asp-action="Sil" method="post">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger">Sil</button>
+                <a asp-action="Index" class="btn btn-secondary">İptal</a>
+            </form>
+        </div>
+    </div>
+</div> 

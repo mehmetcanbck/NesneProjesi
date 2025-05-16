@@ -1,0 +1,51 @@
+@model Yapaydeneme.Models.Kategori
+
+@{
+    ViewData["Title"] = Model.KategoriAdi;
+}
+
+<div class="container">
+    <h1>@Model.KategoriAdi</h1>
+    <p class="lead">@Model.Aciklama</p>
+    <hr />
+
+    <div class="mb-4">
+        <a asp-action="Index" class="btn btn-secondary">Geri Dön</a>
+        <a asp-action="Duzenle" asp-route-id="@Model.Id" class="btn btn-warning">Düzenle</a>
+        <a asp-action="Sil" asp-route-id="@Model.Id" class="btn btn-danger">Sil</a>
+    </div>
+
+    <h3>Bu Kategorideki Ürünler</h3>
+    <div class="row">
+        @if (Model.Urunler != null && Model.Urunler.Any())
+        {
+            @foreach (var urun in Model.Urunler)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        @if (!string.IsNullOrEmpty(urun.ResimUrl))
+                        {
+                            <img src="@urun.ResimUrl" class="card-img-top" alt="@urun.UrunAdi">
+                        }
+                        else
+                        {
+                            <img src="~/images/no-image.jpg" class="card-img-top" alt="Resim Yok">
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@urun.UrunAdi</h5>
+                            <p class="card-text">@urun.Aciklama</p>
+                            <h6 class="card-subtitle mb-2 text-primary">@urun.Fiyat.ToString("C")</h6>
+                            <a asp-controller="Urun" asp-action="Detay" asp-route-id="@urun.Id" class="btn btn-primary">Ürün Detayı</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col">
+                <p>Bu kategoride henüz ürün bulunmamaktadır.</p>
+            </div>
+        }
+    </div>
+</div> 

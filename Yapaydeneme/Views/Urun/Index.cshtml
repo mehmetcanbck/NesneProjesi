@@ -1,0 +1,65 @@
+@model IEnumerable<Yapaydeneme.Models.Urun>
+
+@{
+    ViewData["Title"] = "Ürünler";
+}
+
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <h1>Ürünler</h1>
+        </div>
+        <div class="col-md-6 text-end">
+            <a asp-action="Yeni" class="btn btn-primary">Yeni Ürün Ekle</a>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var urun in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    @if (!string.IsNullOrEmpty(urun.ResimUrl))
+                    {
+                        <img src="@urun.ResimUrl" class="card-img-top" alt="@urun.UrunAdi">
+                    }
+                    else
+                    {
+                        <img src="~/images/no-image.jpg" class="card-img-top" alt="Resim Yok">
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@urun.UrunAdi</h5>
+                        <p class="card-text">@urun.Aciklama</p>
+                        <p class="card-text">
+                            <small class="text-muted">Kategori: @urun.Kategori?.KategoriAdi</small>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">Marka: @urun.Marka</small>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">Numara: @urun.Numara</small>
+                        </p>
+                        <h6 class="card-subtitle mb-2 text-primary">@urun.Fiyat.ToString("C")</h6>
+                        <div class="btn-group">
+                            <a asp-action="Detay" asp-route-id="@urun.Id" class="btn btn-info">Detaylar</a>
+                            <a asp-action="Duzenle" asp-route-id="@urun.Id" class="btn btn-warning">Düzenle</a>
+                            <a asp-action="Sil" asp-route-id="@urun.Id" class="btn btn-danger">Sil</a>
+                        </div>
+                        @if (urun.StokDurumu)
+                        {
+                            <form asp-controller="Sepet" asp-action="UrunEkle" method="post" class="mt-2">
+                                <input type="hidden" name="urunId" value="@urun.Id" />
+                                <input type="hidden" name="adet" value="1" />
+                                <button type="submit" class="btn btn-success w-100">Sepete Ekle</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <button class="btn btn-secondary w-100 mt-2" disabled>Stokta Yok</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div> 

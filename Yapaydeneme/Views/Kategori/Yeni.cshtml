@@ -1,0 +1,38 @@
+@model Yapaydeneme.Models.Kategori
+
+@{
+    ViewData["Title"] = "Yeni Kategori";
+}
+
+<div class="container">
+    <h1>Yeni Kategori</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Yeni" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="KategoriAdi" class="control-label">Kategori Adı</label>
+                    <input asp-for="KategoriAdi" class="form-control" />
+                    <span asp-validation-for="KategoriAdi" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Aciklama" class="control-label">Açıklama</label>
+                    <textarea asp-for="Aciklama" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Aciklama" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+} 

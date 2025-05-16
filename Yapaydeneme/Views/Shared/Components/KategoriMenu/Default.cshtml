@@ -1,0 +1,10 @@
+@model IEnumerable<Yapaydeneme.Models.Kategori>
+
+@foreach (var kategori in Model)
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-controller="Kategori" asp-action="Index" asp-route-kategori="@kategori.KategoriAdi.ToLower()">
+            @kategori.KategoriAdi
+        </a>
+    </li>
+} 

@@ -1,0 +1,84 @@
+@model Yapaydeneme.Models.Urun
+
+@{
+    ViewData["Title"] = "Yeni Ürün";
+}
+
+<div class="container">
+    <h1>Yeni Ürün Ekle</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="Yeni" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="UrunAdi" class="control-label">Ürün Adı</label>
+                    <input asp-for="UrunAdi" class="form-control" />
+                    <span asp-validation-for="UrunAdi" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Fiyat" class="control-label">Fiyat</label>
+                    <input asp-for="Fiyat" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="Fiyat" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Aciklama" class="control-label">Açıklama</label>
+                    <textarea asp-for="Aciklama" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Aciklama" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="ResimUrl" class="control-label">Resim URL</label>
+                    <input asp-for="ResimUrl" class="form-control" />
+                    <span asp-validation-for="ResimUrl" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="KategoriId" class="control-label">Kategori</label>
+                    <select asp-for="KategoriId" class="form-control" 
+                            asp-items="@(new SelectList(ViewBag.Kategoriler, "Id", "KategoriAdi"))">
+                        <option value="">-- Kategori Seçin --</option>
+                    </select>
+                    <span asp-validation-for="KategoriId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Marka" class="control-label">Marka</label>
+                    <input asp-for="Marka" class="form-control" />
+                    <span asp-validation-for="Marka" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Numara" class="control-label">Numara</label>
+                    <input asp-for="Numara" class="form-control" />
+                    <span asp-validation-for="Numara" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Renk" class="control-label">Renk</label>
+                    <input asp-for="Renk" class="form-control" />
+                    <span asp-validation-for="Renk" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <div class="form-check">
+                        <input asp-for="StokDurumu" class="form-check-input" />
+                        <label asp-for="StokDurumu" class="form-check-label">Stokta Var</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+} 

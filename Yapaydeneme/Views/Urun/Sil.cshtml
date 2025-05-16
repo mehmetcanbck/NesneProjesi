@@ -1,0 +1,52 @@
+@model Yapaydeneme.Models.Urun
+
+@{
+    ViewData["Title"] = "Ürün Sil";
+}
+
+<div class="container">
+    <h1>Ürün Sil</h1>
+    <h3>Bu ürünü silmek istediğinizden emin misiniz?</h3>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="row">
+                <dt class="col-sm-4">Ürün Adı</dt>
+                <dd class="col-sm-8">@Model.UrunAdi</dd>
+
+                <dt class="col-sm-4">Fiyat</dt>
+                <dd class="col-sm-8">@Model.Fiyat.ToString("C")</dd>
+
+                <dt class="col-sm-4">Kategori</dt>
+                <dd class="col-sm-8">@Model.Kategori?.KategoriAdi</dd>
+
+                <dt class="col-sm-4">Marka</dt>
+                <dd class="col-sm-8">@Model.Marka</dd>
+
+                <dt class="col-sm-4">Numara</dt>
+                <dd class="col-sm-8">@Model.Numara</dd>
+
+                <dt class="col-sm-4">Renk</dt>
+                <dd class="col-sm-8">@Model.Renk</dd>
+
+                <dt class="col-sm-4">Stok Durumu</dt>
+                <dd class="col-sm-8">@(Model.StokDurumu ? "Stokta Var" : "Stokta Yok")</dd>
+            </dl>
+        </div>
+        <div class="col-md-6">
+            @if (!string.IsNullOrEmpty(Model.ResimUrl))
+            {
+                <img src="@Model.ResimUrl" class="img-fluid rounded" alt="@Model.UrunAdi">
+            }
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <form asp-action="Sil" method="post">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger">Sil</button>
+            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+        </form>
+    </div>
+</div> 

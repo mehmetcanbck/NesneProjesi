@@ -1,0 +1,12 @@
+@model int
+
+<a class="nav-link text-dark position-relative" asp-controller="Sepet" asp-action="Index">
+    <i class="bi bi-cart3"></i>
+    @if (Model > 0)
+    {
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            @Model
+        </span>
+    }
+    <span class="ms-1">Sepetim</span>
+</a> 

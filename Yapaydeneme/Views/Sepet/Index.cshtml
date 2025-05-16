@@ -1,0 +1,109 @@
+@model IEnumerable<Yapaydeneme.Models.Sepet>
+
+@{
+    ViewData["Title"] = "Alışveriş Sepeti";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info" role="alert">
+            Sepetiniz boş. <a href="@Url.Action("Index", "Home")" class="alert-link">Alışverişe devam etmek için tıklayın</a>.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Ürün</th>
+                        <th>Fiyat</th>
+                        <th>Adet</th>
+                        <th>Toplam</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    @if (!string.IsNullOrEmpty(item.Urun.ResimUrl))
+                                    {
+                                        <img src="@item.Urun.ResimUrl" alt="@item.Urun.UrunAdi" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;" />
+                                    }
+                                    <div>
+                                        <h6 class="mb-0">@item.Urun.UrunAdi</h6>
+                                        <small class="text-muted">@item.Urun.Marka - @item.Urun.Numara Numara</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@item.Urun.Fiyat.ToString("C")</td>
+                            <td style="width: 150px;">
+                                <form asp-action="AdetGuncelle" method="post" class="d-flex align-items-center">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <input type="number" name="yeniAdet" value="@item.Adet" min="1" max="10" class="form-control form-control-sm" style="width: 70px;" />
+                                    <button type="submit" class="btn btn-sm btn-outline-primary ms-2">
+                                        <i class="bi bi-arrow-clockwise"></i>
+                                    </button>
+                                </form>
+                            </td>
+                            <td>@((item.Urun.Fiyat * item.Adet).ToString("C"))</td>
+                            <td>
+                                <form asp-action="UrunSil" method="post" style="display: inline;">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bu ürünü sepetten çıkarmak istediğinize emin misiniz?')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end"><strong>Toplam Tutar:</strong></td>
+                        <td><strong>@ViewBag.ToplamTutar.ToString("C")</strong></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <form asp-action="SepetiTemizle" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Sepetinizi tamamen boşaltmak istediğinize emin misiniz?')">
+                    <i class="bi bi-trash"></i> Sepeti Temizle
+                </button>
+            </form>
+
+            <div>
+                <a href="@Url.Action("Index", "Home")" class="btn btn-outline-secondary me-2">
+                    <i class="bi bi-arrow-left"></i> Alışverişe Devam Et
+                </a>
+                <a href="@Url.Action("Create", "Siparis")" class="btn btn-success">
+                    <i class="bi bi-check2"></i> Siparişi Tamamla
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Adet değişikliğinde otomatik güncelleme
+            $('input[name="yeniAdet"]').on('change', function() {
+                $(this).closest('form').submit();
+            });
+        });
+    </script>
+} 

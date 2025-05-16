@@ -1,0 +1,181 @@
+@model List<Yapaydeneme.Models.Urun>
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Ürün Yönetimi</h2>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#urunEkleModal">
+            <i class="bi bi-plus-circle"></i> Yeni Ürün Ekle
+        </button>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Resim</th>
+                            <th>Ürün Adı</th>
+                            <th>Kategori</th>
+                            <th>Fiyat</th>
+                            <th>Stok</th>
+                            <th>Durum</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var urun in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="@urun.ResimUrl" alt="@urun.UrunAdi" style="width: 50px; height: 50px; object-fit: cover;" />
+                                </td>
+                                <td>@urun.UrunAdi</td>
+                                <td>@(urun.Kategori?.KategoriAdi ?? "Kategorisiz")</td>
+                                <td>@urun.Fiyat.ToString("C")</td>
+                                <td>@urun.StokDurumu</td>
+                                <td>
+                                    @if (urun.StokDurumu)
+                                    {
+                                        <span class="badge bg-success">Stokta</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Stokta Değil</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-primary" onclick="urunDuzenle(@urun.Id)">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="urunSil(@urun.Id)">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ürün Ekleme Modal -->
+<div class="modal fade" id="urunEkleModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Yeni Ürün Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="urunEkleForm">
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Ürün Adı</label>
+                                <input type="text" class="form-control" name="UrunAdi" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Açıklama</label>
+                                <textarea class="form-control" name="Aciklama" rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Fiyat</label>
+                                <input type="number" class="form-control" name="Fiyat" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Kategori</label>
+                                <select class="form-control" name="KategoriId" required>
+                                    <option value="">-- Kategori Seçin --</option>
+                                    @foreach (var kategori in ViewBag.Kategoriler)
+                                    {
+                                        <option value="@kategori.Id">@kategori.KategoriAdi</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Resim URL</label>
+                                <input type="url" class="form-control" name="ResimUrl">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Marka</label>
+                                <input type="text" class="form-control" name="Marka" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Numara</label>
+                                <input type="text" class="form-control" name="Numara" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Renk</label>
+                                <input type="text" class="form-control" name="Renk" required>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="StokDurumu" value="true" checked>
+                                    <label class="form-check-label">Stokta Var</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                        <button type="submit" class="btn btn-primary">Ürün Ekle</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#urunEkleForm').on('submit', function(e) {
+            e.preventDefault();
+            
+            var formData = new FormData(this);
+            
+            // Checkbox değerini doğru şekilde ekle
+            var stokDurumu = $('input[name="StokDurumu"]').is(':checked');
+            formData.set('StokDurumu', stokDurumu);
+
+            $.ajax({
+                url: '/Urun/Yeni',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Modal'ı kapat
+                        $('#urunEkleModal').modal('hide');
+                        
+                        // Ürün listesini güncelle
+                        $.get('/Urun/UrunListesi', function(data) {
+                            $('#urunYonetimi').html(data);
+                        });
+                        
+                        // Formu temizle
+                        $('#urunEkleForm')[0].reset();
+                    } else {
+                        // Hataları göster
+                        alert('Ürün eklenirken hata oluştu: ' + response.errors.join('\n'));
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Hata:', xhr.responseText);
+                    alert('Ürün eklenirken bir hata oluştu. Lütfen tüm alanları kontrol edin.');
+                }
+            });
+        });
+    });
+</script> 

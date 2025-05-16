@@ -1,0 +1,261 @@
+@model List<Yapaydeneme.Models.Urun>
+@{
+    ViewData["Title"] = "Anasayfa";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    <!-- Ana İçerik Bölümü -->
+    <div id="mainContent">
+        <!-- Hoş Geldiniz Kartı -->
+        <div class="card mb-4 bg-primary text-white">
+            <div class="card-body">
+                <h4 class="card-title mb-0">
+                    <i class="bi bi-person-circle me-2"></i>
+                    Yönetim Paneline Hoş Geldiniz
+                </h4>
+            </div>
+        </div>
+
+        <!-- Özet Kartları -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card bg-info text-white h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title mb-0">Toplam Ürün</h6>
+                                <h2 class="mt-2 mb-0">@Model.Count</h2>
+                            </div>
+                            <i class="bi bi-box-seam fs-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-success text-white h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title mb-0">Stokta Olan Ürünler</h6>
+                                <h2 class="mt-2 mb-0">@Model.Count(u => u.StokDurumu)</h2>
+                            </div>
+                            <i class="bi bi-check-circle fs-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-warning text-dark h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title mb-0">Stokta Olmayan Ürünler</h6>
+                                <h2 class="mt-2 mb-0">@Model.Count(u => !u.StokDurumu)</h2>
+                            </div>
+                            <i class="bi bi-exclamation-circle fs-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Son Eklenen Ürünler -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Son Eklenen Ürünler</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Resim</th>
+                                <th>Ürün Adı</th>
+                                <th>Kategori</th>
+                                <th>Fiyat</th>
+                                <th>Stok Durumu</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var urun in Model.OrderByDescending(u => u.Id).Take(5))
+                            {
+                                <tr>
+                                    <td>
+                                        <img src="@urun.ResimUrl" alt="@urun.UrunAdi" style="height: 50px; width: 50px; object-fit: cover;" />
+                                    </td>
+                                    <td>@urun.UrunAdi</td>
+                                    <td>@urun.Kategori?.KategoriAdi</td>
+                                    <td>@urun.Fiyat.ToString("C")</td>
+                                    <td>
+                                        @if (urun.StokDurumu)
+                                        {
+                                            <span class="badge bg-success">Stokta</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Stokta Değil</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a asp-controller="Urun" asp-action="Detay" asp-route-id="@urun.Id" 
+                                               class="btn btn-sm btn-info">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a asp-controller="Urun" asp-action="Duzenle" asp-route-id="@urun.Id" 
+                                               class="btn btn-sm btn-warning">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a asp-controller="Urun" asp-action="Sil" asp-route-id="@urun.Id" 
+                                               class="btn btn-sm btn-danger" 
+                                               onclick="return confirm('Bu ürünü silmek istediğinizden emin misiniz?')">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ürün Yönetimi Bölümü -->
+    <div id="urunYonetimi" class="d-none">
+        <!-- Buraya ürün yönetimi içeriği dinamik olarak yüklenecek -->
+    </div>
+
+    <!-- Kategori Yönetimi Bölümü -->
+    <div id="kategoriYonetimi" class="d-none">
+        <!-- Buraya kategori yönetimi içeriği dinamik olarak yüklenecek -->
+    </div>
+</div>
+
+<!-- Ürün Ekleme Modal -->
+<div class="modal fade" id="urunEkleModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Yeni Ürün Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="Urun" asp-action="Yeni" method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Ürün Adı</label>
+                                <input type="text" class="form-control" name="UrunAdi" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Açıklama</label>
+                                <textarea class="form-control" name="Aciklama" rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Fiyat</label>
+                                <input type="number" class="form-control" name="Fiyat" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Kategori</label>
+                                <select class="form-control" name="KategoriId" required>
+                                    <option value="">-- Kategori Seçin --</option>
+                                    @foreach (var kategori in ViewBag.Kategoriler)
+                                    {
+                                        <option value="@kategori.Id">@kategori.KategoriAdi</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Resim URL</label>
+                                <input type="url" class="form-control" name="ResimUrl" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Marka</label>
+                                <input type="text" class="form-control" name="Marka" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Numara</label>
+                                <input type="text" class="form-control" name="Numara" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Renk</label>
+                                <input type="text" class="form-control" name="Renk" required>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="StokDurumu" checked>
+                                    <label class="form-check-label">Stokta Var</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                        <button type="submit" class="btn btn-primary">Ürün Ekle</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Aktif menü öğesini işaretleme fonksiyonu
+            function setActiveMenuItem(activeId) {
+                // Tüm menü öğelerinden active sınıfını kaldır
+                $('.list-group-item').removeClass('active');
+                // Seçili menü öğesine active sınıfını ekle
+                $(activeId).addClass('active');
+            }
+
+            // Tüm içerikleri gizle ve istenen içeriği göster
+            function showContent(contentId) {
+                $('#mainContent, #urunYonetimi, #kategoriYonetimi').addClass('d-none');
+                $(contentId).removeClass('d-none');
+            }
+
+            // Dashboard linkine tıklandığında
+            $('#dashboardLink').click(function(e) {
+                e.preventDefault();
+                showContent('#mainContent');
+                setActiveMenuItem('#dashboardLink');
+            });
+
+            // Ürün yönetimi linkine tıklandığında
+            $('#urunYonetimiLink').click(function(e) {
+                e.preventDefault();
+                showContent('#urunYonetimi');
+                setActiveMenuItem('#urunYonetimiLink');
+                
+                // Ürün yönetimi içeriğini yükle
+                $.get('/Urun/UrunListesi', function(data) {
+                    $('#urunYonetimi').html(data);
+                });
+            });
+
+            // Kategori yönetimi linkine tıklandığında
+            $('#kategoriYonetimiLink').click(function(e) {
+                e.preventDefault();
+                showContent('#kategoriYonetimi');
+                setActiveMenuItem('#kategoriYonetimiLink');
+                
+                // Kategori yönetimi içeriğini yükle
+                $.get('/Kategori/KategoriListesi', function(data) {
+                    $('#kategoriYonetimi').html(data);
+                });
+            });
+        });
+    </script>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+} 
