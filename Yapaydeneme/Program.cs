@@ -3,7 +3,7 @@ using Yapaydeneme.Data;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc;
-
+// KASLI MEMOLİ
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
