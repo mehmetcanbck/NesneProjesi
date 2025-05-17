@@ -1,0 +1,36 @@
+﻿@model HesapOlusturModel
+
+<section>
+    <div class="container">
+        <div class="row justify-content-center my-3">
+            <div class="col-7">
+                <div class="card card-body">
+                    <form method="post" novalidate>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="mb-3">
+                            <label asp-for="KullaniciAdi" class="form-label"></label>
+                            <input asp-for="KullaniciAdi" class="form-control" />
+                            <span asp-validation-for="KullaniciAdi" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Sifre" class="form-label"></label>
+                            <input asp-for="Sifre" class="form-control" />
+                            <span asp-validation-for="Sifre" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="SifreTekrar" class="form-label"></label>
+                            <input asp-for="SifreTekrar" class="form-control" />
+                            <span asp-validation-for="SifreTekrar" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

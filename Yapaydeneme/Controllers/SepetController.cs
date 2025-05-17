@@ -28,11 +28,11 @@ namespace Yapaydeneme.Controllers
             }
 
             var sepetItems = await _context.Sepet
-                .Include(s => s.Urun)
+                .Include(s => s.urun)
                 .Where(s => s.KullaniciId == userId)
                 .ToListAsync();
 
-            decimal toplamTutar = sepetItems.Sum(item => item.Urun.Fiyat * item.Adet);
+            decimal toplamTutar = sepetItems.Sum(item => item.urun.Fiyat * item.Adet);
             ViewBag.ToplamTutar = toplamTutar;
 
             return View(sepetItems);

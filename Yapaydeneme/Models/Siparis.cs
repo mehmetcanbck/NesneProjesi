@@ -8,11 +8,11 @@ namespace Yapaydeneme.Models
         public int Id { get; set; }
 
         [Required]
-        public string KullaniciId { get; set; }
+        public string? KullaniciId { get; set; }
 
         [Required]
         [Display(Name = "Sipariş Numarası")]
-        public string SiparisNo { get; set; }
+        public string? SiparisNo { get; set; }
 
         [Required]
         [Display(Name = "Toplam Tutar")]
@@ -20,15 +20,15 @@ namespace Yapaydeneme.Models
 
         [Required]
         [Display(Name = "Sipariş Durumu")]
-        public string SiparisDurumu { get; set; }
+        public string? SiparisDurumu { get; set; }
 
         [Required]
         [Display(Name = "Teslimat Adresi")]
-        public string TeslimatAdresi { get; set; }
+        public string? TeslimatAdresi { get; set; }
 
         [Required]
         [Display(Name = "İletişim Numarası")]
-        public string TelefonNo { get; set; }
+        public string? TelefonNo { get; set; }
 
         [Display(Name = "Sipariş Tarihi")]
         public DateTime SiparisTarihi { get; set; } = DateTime.Now;

@@ -32,17 +32,17 @@
                         <tr>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    @if (!string.IsNullOrEmpty(item.Urun.ResimUrl))
+                                    @if (!string.IsNullOrEmpty(item.urun.ResimUrl))
                                     {
-                                        <img src="@item.Urun.ResimUrl" alt="@item.Urun.UrunAdi" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;" />
+                                        <img src="@item.urun.ResimUrl" alt="@item.urun.UrunAdi" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;" />
                                     }
                                     <div>
-                                        <h6 class="mb-0">@item.Urun.UrunAdi</h6>
-                                        <small class="text-muted">@item.Urun.Marka - @item.Urun.Numara Numara</small>
+                                        <h6 class="mb-0">@item.urun.UrunAdi</h6>
+                                        <small class="text-muted">@item.urun.Marka - @item.urun.Numara Numara</small>
                                     </div>
                                 </div>
                             </td>
-                            <td>@item.Urun.Fiyat.ToString("C")</td>
+                            <td>@item.urun.Fiyat.ToString("C")</td>
                             <td style="width: 150px;">
                                 <form asp-action="AdetGuncelle" method="post" class="d-flex align-items-center">
                                     <input type="hidden" name="id" value="@item.Id" />
@@ -52,7 +52,7 @@
                                     </button>
                                 </form>
                             </td>
-                            <td>@((item.Urun.Fiyat * item.Adet).ToString("C"))</td>
+                            <td>@((item.urun.Fiyat * item.Adet).ToString("C"))</td>
                             <td>
                                 <form asp-action="UrunSil" method="post" style="display: inline;">
                                     <input type="hidden" name="id" value="@item.Id" />

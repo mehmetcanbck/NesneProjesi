@@ -8,10 +8,10 @@ namespace Yapaydeneme.Models
         public int Id { get; set; }
 
         [Required]
-        public string KullaniciId { get; set; }
+        public string? KullaniciId { get; set; }
 
         public int UrunId { get; set; }
-        public virtual Urun Urun { get; set; }
+        public virtual Urun? urun { get; set; }
 
         [Required]
         [Range(1, 10, ErrorMessage = "Adet 1 ile 10 arasında olmalıdır")]

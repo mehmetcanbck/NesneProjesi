@@ -1,12 +1,13 @@
+        using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Yapaydeneme.Models;
 
 namespace Yapaydeneme.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {
         }
 
@@ -27,7 +28,7 @@ namespace Yapaydeneme.Data
 
             // Sepet-Ürün ilişkisi
             modelBuilder.Entity<Sepet>()
-                .HasOne(s => s.Urun)
+                .HasOne(s => s.urun)
                 .WithMany()
                 .HasForeignKey(s => s.UrunId);
         }

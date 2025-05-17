@@ -56,7 +56,7 @@ namespace Yapaydeneme.Controllers
             
             // Sepetteki ürünleri al
             var sepetUrunleri = await _context.Sepet
-                .Include(s => s.Urun)
+                .Include(s => s.urun)
                 .Where(s => s.KullaniciId == kullaniciId)
                 .ToListAsync();
 
@@ -66,7 +66,7 @@ namespace Yapaydeneme.Controllers
             }
 
             // Toplam tutarı hesapla
-            var toplamTutar = sepetUrunleri.Sum(s => s.Urun.Fiyat * s.Adet);
+            var toplamTutar = sepetUrunleri.Sum(s => s.urun.Fiyat * s.Adet);
 
             // Yeni sipariş oluştur
             var siparis = new Siparis

@@ -10,7 +10,7 @@ namespace Yapaydeneme.Models
         [Required(ErrorMessage = "Ürün adı zorunludur.")]
         [StringLength(100, ErrorMessage = "Ürün adı en fazla 100 karakter olabilir.")]
         [Display(Name = "Ürün Adı")]
-        public string UrunAdi { get; set; }
+        public string? UrunAdi { get; set; }
 
         [Required(ErrorMessage = "Fiyat zorunludur.")]
         [Range(0, double.MaxValue, ErrorMessage = "Fiyat 0'dan büyük olmalıdır.")]
@@ -32,17 +32,17 @@ namespace Yapaydeneme.Models
         [Required(ErrorMessage = "Marka zorunludur.")]
         [StringLength(50, ErrorMessage = "Marka en fazla 50 karakter olabilir.")]
         [Display(Name = "Marka")]
-        public string Marka { get; set; }
+        public string? Marka { get; set; }
         
         [Required(ErrorMessage = "Numara zorunludur.")]
         [Display(Name = "Numara")]
         [StringLength(10, ErrorMessage = "Numara en fazla 10 karakter olabilir.")]
-        public string Numara { get; set; }
+        public string? Numara { get; set; }
 
         [Required(ErrorMessage = "Renk zorunludur.")]
         [StringLength(30, ErrorMessage = "Renk en fazla 30 karakter olabilir.")]
         [Display(Name = "Renk")]
-        public string Renk { get; set; }
+        public string? Renk { get; set; }
 
         [Display(Name = "Stokta Var")]
         public bool StokDurumu { get; set; } = true;
