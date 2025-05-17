@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Yapaydeneme.Data;
 using Yapaydeneme.Models;
-
+//github deneme yazısı
 namespace Yapaydeneme.Controllers
 {
     public class AdminController : Controller
