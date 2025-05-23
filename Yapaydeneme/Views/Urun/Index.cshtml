@@ -1,6 +1,7 @@
 @model IEnumerable<Yapaydeneme.Models.Urun>
 
 @{
+    Layout = "_AdminLayout";
     ViewData["Title"] = "Ürünler";
 }
 
@@ -21,7 +22,7 @@
                 <div class="card h-100">
                     @if (!string.IsNullOrEmpty(urun.ResimUrl))
                     {
-                        <img src="@urun.ResimUrl" class="card-img-top" alt="@urun.UrunAdi">
+                        <img src="~/img/@urun.ResimUrl" class="card-img-top" alt="@urun.UrunAdi">
                     }
                     else
                     {

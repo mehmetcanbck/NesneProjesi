@@ -1,13 +1,15 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Yapaydeneme.Models;
 using Yapaydeneme.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Yapaydeneme.Controllers
 {
+    [Authorize]
     public class SiparisController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -16,11 +18,11 @@ namespace Yapaydeneme.Controllers
         {
             _context = context;
         }
-
+        [AllowAnonymous]
         // GET: Siparis
         public async Task<IActionResult> Index()
         {
-            var kullaniciId = User.Identity.Name;
+            var kullaniciId = User.Identity!.Name;
             var siparisler = await _context.Siparisler
                 .Where(s => s.KullaniciId == kullaniciId)
                 .OrderByDescending(s => s.SiparisTarihi)
@@ -52,8 +54,24 @@ namespace Yapaydeneme.Controllers
         [HttpPost]
         public async Task<IActionResult> SiparisOlustur(string teslimatAdresi, string telefonNo)
         {
-            var kullaniciId = User.Identity.Name;
-            
+            var kullaniciId = User.Identity!.Name;
+            if (string.IsNullOrEmpty(kullaniciId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (string.IsNullOrEmpty(teslimatAdresi) || string.IsNullOrEmpty(telefonNo))
+            {
+                TempData["Hata"] = "Lütfen tüm alanları doldurunuz!";
+                return RedirectToAction("Index", "Sepet");
+            }
+
+            if (telefonNo.Length != 10 || !telefonNo.All(char.IsDigit))
+            {
+                TempData["Hata"] = "Lütfen geçerli bir telefon numarası giriniz!";
+                return RedirectToAction("Index", "Sepet");
+            }
+
             // Sepetteki ürünleri al
             var sepetUrunleri = await _context.Sepet
                 .Include(s => s.urun)
@@ -62,11 +80,12 @@ namespace Yapaydeneme.Controllers
 
             if (!sepetUrunleri.Any())
             {
+                TempData["Hata"] = "Sepetiniz boş!";
                 return RedirectToAction("Index", "Sepet");
             }
 
             // Toplam tutarı hesapla
-            var toplamTutar = sepetUrunleri.Sum(s => s.urun.Fiyat * s.Adet);
+            var toplamTutar = sepetUrunleri.Sum(s => s.urun!.Fiyat * s.Adet);
 
             // Yeni sipariş oluştur
             var siparis = new Siparis
@@ -85,9 +104,17 @@ namespace Yapaydeneme.Controllers
             // Sepeti temizle
             _context.Sepet.RemoveRange(sepetUrunleri);
 
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Detay), new { id = siparis.Id });
+            try
+            {
+                await _context.SaveChangesAsync();
+                TempData["Basarili"] = "Siparişiniz başarıyla oluşturuldu! Sipariş numaranız: " + siparis.SiparisNo;
+                return RedirectToAction(nameof(Detay), new { id = siparis.Id });
+            }
+            catch (Exception)
+            {
+                TempData["Hata"] = "Sipariş oluşturulurken bir hata oluştu!";
+                return RedirectToAction("Index", "Sepet");
+            }
         }
 
         // POST: Siparis/DurumGuncelle
@@ -107,4 +134,4 @@ namespace Yapaydeneme.Controllers
             return RedirectToAction(nameof(Detay), new { id = siparis.Id });
         }
     }
-} 
+}

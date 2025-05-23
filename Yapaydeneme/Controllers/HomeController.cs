@@ -25,7 +25,24 @@ namespace Yapaydeneme.Controllers
 
             return View(sonEklenenUrunler);
         }
+        public async Task<IActionResult> Detay(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var urun = await _context.Urunler
+                .Include(u => u.Kategori)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (urun == null)
+            {
+                return NotFound();
+            }
+
+            return View(urun);
+        }
         public IActionResult Privacy()
         {
             return View();

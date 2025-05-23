@@ -4,52 +4,193 @@
     ViewData["Title"] = "Ana Sayfa";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Hoş Geldiniz</h1>
-    <p>Kaliteli ayakkabıların adresi</p>
-</div>
+<style>
+    :root {
+        --flo-pink: #FF69B4;
+        --flo-light-pink: #FFB6C1;
+        --flo-dark-pink: #DB7093;
+        --flo-gray: #F8F9FA;
+    }
 
-<div class="row mt-4">
-    <div class="col-md-12">
-        <h2>Son Eklenen Ürünler</h2>
+    body {
+        background-color: var(--flo-gray);
+    }
+
+    .hero-section {
+        background: linear-gradient(rgba(255, 105, 180, 0.8), rgba(255, 182, 193, 0.8)), url('/images/shoes-bg.jpg');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 120px 0;
+        margin-bottom: 60px;
+        border-radius: 0 0 30px 30px;
+    }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-section p {
+            font-size: 1.5rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+    .card {
+        transition: all 0.3s ease;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        background: white;
+        overflow: hidden;
+    }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.15);
+        }
+
+    .card-img-top {
+        height: 250px;
+        object-fit: cover;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .card-title {
+        color: var(--flo-dark-pink);
+        font-weight: 600;
+        font-size: 1.25rem;
+    }
+
+    .btn-primary {
+        background-color: var(--flo-pink);
+        border-color: var(--flo-pink);
+        border-radius: 25px;
+        padding: 8px 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: var(--flo-dark-pink);
+            border-color: var(--flo-dark-pink);
+            transform: scale(1.05);
+        }
+
+    .btn-success {
+        background-color: var(--flo-light-pink);
+        border-color: var(--flo-light-pink);
+        border-radius: 25px;
+        padding: 8px 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        .btn-success:hover {
+            background-color: var(--flo-pink);
+            border-color: var(--flo-pink);
+            transform: scale(1.05);
+        }
+
+    .section-title {
+        position: relative;
+        margin-bottom: 40px;
+        padding-bottom: 15px;
+        color: var(--flo-dark-pink);
+        font-weight: 600;
+    }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, var(--flo-light-pink), var(--flo-pink));
+            border-radius: 3px;
+        }
+
+    .price-tag {
+        color: var(--flo-pink);
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+
+    .category-tag {
+        background-color: var(--flo-light-pink);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 15px;
+        font-size: 0.85rem;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+
+    .product-description {
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin: 10px 0;
+    }
+</style>
+
+<div class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Hoş Geldiniz</h1>
+        <p class="lead">Kaliteli ayakkabıların adresi</p>
     </div>
 </div>
 
-<div class="row">
-    @foreach (var urun in Model)
-    {
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                @if (!string.IsNullOrEmpty(urun.ResimUrl))
-                {
-                    <img src="@urun.ResimUrl" class="card-img-top" alt="@urun.UrunAdi">
-                }
-                else
-                {
-                    <img src="~/images/no-image.jpg" class="card-img-top" alt="Resim Yok">
-                }
-                <div class="card-body">
-                    <h5 class="card-title">@urun.UrunAdi</h5>
-                    <p class="card-text">@urun.Aciklama</p>
-                    <p class="card-text">
-                        <small class="text-muted">Kategori: @urun.Kategori?.KategoriAdi</small>
-                    </p>
-                    <h6 class="card-subtitle mb-2 text-primary">@urun.Fiyat.ToString("C")</h6>
-                    <a asp-controller="Urun" asp-action="Detay" asp-route-id="@urun.Id" class="btn btn-primary">Detaylar</a>
-                    @if (urun.StokDurumu)
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="section-title text-center">Son Eklenen Ürünler</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var urun in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    @if (!string.IsNullOrEmpty(urun.ResimUrl))
                     {
-                        <form asp-controller="Sepet" asp-action="Ekle" method="post" class="d-inline">
-                            <input type="hidden" name="urunId" value="@urun.Id" />
-                            <input type="hidden" name="adet" value="1" />
-                            <button type="submit" class="btn btn-success">Sepete Ekle</button>
-                        </form>
+                        <img src="~/img/@urun.ResimUrl" class="card-img-top" alt="@urun.UrunAdi">
                     }
                     else
                     {
-                        <button class="btn btn-secondary" disabled>Stokta Yok</button>
+                        <img src="~/images/no-image.jpg" class="card-img-top" alt="Resim Yok">
                     }
+                    <div class="card-body">
+                        <span class="category-tag">@urun.Kategori?.KategoriAdi</span>
+                        <h5 class="card-title">@urun.UrunAdi</h5>
+                        <p class="product-description">@urun.Aciklama</p>
+                        <div class="price-tag mb-3">@urun.Fiyat.ToString("C")</div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a asp-controller="Home" asp-action="Detay" asp-route-id="@urun.Id" class="btn btn-primary">Detaylar</a>
+                            @if (urun.StokDurumu)
+                            {
+                                <form asp-controller="Sepet" asp-action="Index" method="post" class="d-inline">
+                                    <input type="hidden" name="urunId" value="@urun.Id" />
+                                    <input type="hidden" name="adet" value="1" />
+                                    <button type="submit" class="btn btn-success">Sepete Ekle</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <button class="btn btn-secondary" disabled>Stokta Yok</button>
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+</div> 

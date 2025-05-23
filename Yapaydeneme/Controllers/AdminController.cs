@@ -1,10 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Yapaydeneme.Data;
 using Yapaydeneme.Models;
-//github deneme yazısı
+
 namespace Yapaydeneme.Controllers
 {
+  
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,7 +25,7 @@ namespace Yapaydeneme.Controllers
         public IActionResult Login(string username, string password)
         {
             // Basit bir admin kontrolü (gerçek uygulamada veritabanından kontrol edilmeli)
-            if (username == "admin" && password == "admin123")
+            if (username == "admin" && password == "123")
             {
                 // Session'a admin bilgisini kaydet
                 HttpContext.Session.SetString("AdminLogin", "true");

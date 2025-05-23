@@ -7,9 +7,11 @@ using Yapaydeneme.Models;
 using System.Collections.Generic;
 using Yapaydeneme.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Yapaydeneme.Controllers
 {
+
     public class UrunController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -48,6 +50,7 @@ namespace Yapaydeneme.Controllers
 
             return View(urun);
         }
+        
 
         // GET: Urun/Yeni
         public async Task<IActionResult> Yeni()

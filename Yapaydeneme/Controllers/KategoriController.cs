@@ -101,8 +101,8 @@ namespace Yapaydeneme.Controllers
                             menuHtml = menuHtml
                         });
                     }
-                    
-                    return RedirectToAction(nameof(Index));
+
+                    return RedirectToAction("KategoriListesi", "Kategori");
                 }
 
                 if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
@@ -190,7 +190,7 @@ namespace Yapaydeneme.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("KategoriListesi", "Kategori"); 
             }
             return View(kategori);
         }
@@ -230,7 +230,7 @@ namespace Yapaydeneme.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("KategoriListesi", "Kategori");
         }
 
         // Kategori listesini partial view olarak döndüren action

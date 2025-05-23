@@ -6,9 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using Yapaydeneme.Models;
 using Yapaydeneme.Data;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Yapaydeneme.Controllers
 {
+    [Authorize]
     public class SepetController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -32,7 +34,7 @@ namespace Yapaydeneme.Controllers
                 .Where(s => s.KullaniciId == userId)
                 .ToListAsync();
 
-            decimal toplamTutar = sepetItems.Sum(item => item.urun.Fiyat * item.Adet);
+            decimal toplamTutar = sepetItems.Sum(item => item.urun!.Fiyat * item.Adet);
             ViewBag.ToplamTutar = toplamTutar;
 
             return View(sepetItems);

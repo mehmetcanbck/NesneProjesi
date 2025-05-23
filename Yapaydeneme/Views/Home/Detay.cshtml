@@ -1,4 +1,4 @@
-@model Yapaydeneme.Models.Urun
+﻿@model Yapaydeneme.Models.Urun
 
 @{
     ViewData["Title"] = Model.UrunAdi;
@@ -9,7 +9,7 @@
         <div class="col-md-6">
             @if (!string.IsNullOrEmpty(Model.ResimUrl))
             {
-                <img src="@Model.ResimUrl" class="img-fluid rounded" alt="@Model.UrunAdi">
+                <img src="~/img/@Model.ResimUrl" class="img-fluid rounded" alt="@Model.UrunAdi">
             }
             else
             {
@@ -58,16 +58,7 @@
             }
             <div class="mt-3">
                 <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Geri Dön</a>
-                @if (!User.Identity.IsAuthenticated)
-                {
-                    <a asp-action="Duzenle" asp-route-id="@Model.Id" class="btn btn-warning">
-                        <i class="bi bi-pencil"></i> Düzenle
-                    </a>
-                    <a asp-action="Sil" asp-route-id="@Model.Id" class="btn btn-danger"
-                       onclick="return confirm('Bu ürünü silmek istediğinizden emin misiniz?');">
-                        <i class="bi bi-trash"></i> Sil
-                    </a>
-                }
+
             </div>
         </div>
     </div>

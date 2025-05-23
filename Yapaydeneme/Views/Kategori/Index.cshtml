@@ -1,6 +1,7 @@
 @model IEnumerable<Yapaydeneme.Models.Kategori>
 
 @{
+
     ViewData["Title"] = ViewBag.SecilenKategori != null ? 
         char.ToUpper(ViewBag.SecilenKategori[0]) + ViewBag.SecilenKategori.Substring(1) : 
         "Kategoriler";
@@ -44,7 +45,7 @@
                                         <div class="card h-100">
                                             @if (!string.IsNullOrEmpty(urun.ResimUrl))
                                             {
-                                                <img src="@urun.ResimUrl" class="card-img-top" alt="@urun.UrunAdi" style="height: 200px; object-fit: cover;">
+                                                <img src="~/img/@urun.ResimUrl" class="card-img-top" alt="@urun.UrunAdi" style="height: 200px; object-fit: cover;">
                                             }
                                             else
                                             {
@@ -62,7 +63,7 @@
                                                 </p>
                                                 <h6 class="card-subtitle mb-2 text-primary">@urun.Fiyat.ToString("C")</h6>
                                                 <div class="d-grid gap-2">
-                                                    <a asp-controller="Urun" asp-action="Detay" asp-route-id="@urun.Id" 
+                                                    <a asp-controller="Home" asp-action="Detay" asp-route-id="@urun.Id" 
                                                        class="btn btn-primary">Ürün Detayı</a>
                                                     @if (urun.StokDurumu)
                                                     {

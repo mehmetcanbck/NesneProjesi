@@ -24,7 +24,7 @@ namespace Yapaydeneme.Controllers
             {
                 var user = new IdentityUser { UserName = model.KullaniciAdi, Email = model.Email };
 
-                var result = await _userManager.CreateAsync(user, model.Sifre);
+                var result = await _userManager.CreateAsync(user, model.Sifre !);
 
                 if (result.Succeeded)
                 {
