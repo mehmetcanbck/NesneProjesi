@@ -81,57 +81,16 @@
                 </button>
             </form>
 
-                        <div>
+            <div>
                 <a href="@Url.Action("Index", "Home")" class="btn btn-outline-secondary me-2">
                     <i class="bi bi-arrow-left"></i> Alışverişe Devam Et
                 </a>
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#siparisModal">
+                <a href="@Url.Action("SiparisOlustur", "Siparis")" class="btn btn-success">
                     <i class="bi bi-check2"></i> Siparişi Tamamla
-                </button>
+                </a>
             </div>
         </div>
     }
-</div>
-
-<!-- Sipariş Tamamlama Modal -->
-<div class="modal fade" id="siparisModal" tabindex="-1" aria-labelledby="siparisModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="siparisModalLabel">Sipariş Bilgileri</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form asp-action="SiparisOlustur" method="post">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="teslimatAdresi" class="form-label">Teslimat Adresi</label>
-                        <textarea class="form-control" id="teslimatAdresi" name="teslimatAdresi" rows="3" required 
-                            placeholder="Örnek: Atatürk Mah. Cumhuriyet Cad. No:123 D:4 Kadıköy/İstanbul"></textarea>
-                        <small class="text-muted">Lütfen tam ve doğru adres bilgilerinizi giriniz.</small>
-                    </div>
-                    <div class="mb-3">
-                        <label for="telefonNo" class="form-label">Telefon Numarası</label>
-                        <input type="tel" class="form-control" id="telefonNo" name="telefonNo" required 
-                               pattern="[0-9]{10}" placeholder="5XX XXX XX XX"
-                               oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 10)">
-                        <small class="text-muted">Örnek: 5XX XXX XX XX (Başında 0 olmadan 10 haneli numara)</small>
-                    </div>
-                    <div class="alert alert-info">
-                        <h6 class="alert-heading">Sipariş Özeti</h6>
-                        <p class="mb-0"><strong>Toplam Tutar:</strong> @ViewBag.ToplamTutar.ToString("C")</p>
-                        <hr>
-                        <p class="mb-0 small">Siparişinizi tamamladıktan sonra sipariş detaylarınızı görüntüleyebilirsiniz.</p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-                    <button type="submit" class="btn btn-success">
-                        <i class="bi bi-check2-circle"></i> Siparişi Onayla
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
 </div>
 
 @section Styles {

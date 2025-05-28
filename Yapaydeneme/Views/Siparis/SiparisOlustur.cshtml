@@ -1,54 +1,97 @@
 ﻿@model Yapaydeneme.Models.Siparis
 @{
-    Layout = "_AdminLayout";
+    ViewData["Title"] = "Sipariş Oluştur";
 }
 
-<div class="row">
-    <div class="col-md-8">
-        <div class="card shadow">
-            <div class="card-header py-3">
-                <h5 class="card-title mb-0">Sipariş Bilgileri</h5>
-            </div>
-            <div class="card-body">
-                <form asp-action="SiparisOlustur" method="post">
-                    <div class="mb-3">
-                        <label for="teslimatAdresi" class="form-label">Teslimat Adresi</label>
-                        <textarea class="form-control" id="teslimatAdresi" name="teslimatAdresi" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="telefonNo" class="form-label">Telefon Numarası</label>
-                        <input type="tel" class="form-control" id="telefonNo" name="telefonNo" required>
-                    </div>
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check-circle me-2"></i>Siparişi Tamamla
-                        </button>
-                        <a asp-controller="Sepet" asp-action="Index" class="btn btn-secondary">
-                            <i class="bi bi-arrow-left me-2"></i>Sepete Dön
-                        </a>
-                    </div>
-                </form>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h4 class="mb-0">Sipariş Bilgileri</h4>
+                </div>
+                <div class="card-body">
+                    @if (TempData["Hata"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["Hata"]
+                        </div>
+                    }
+
+                    <form asp-action="SiparisOlustur" method="post">
+                        <div class="mb-3">
+                            <label for="teslimatAdresi" class="form-label">Teslimat Adresi</label>
+                            <textarea class="form-control" id="teslimatAdresi" name="teslimatAdresi" rows="3" required 
+                                    placeholder="Örnek: Atatürk Mah. Cumhuriyet Cad. No:123 D:4 Kadıköy/İstanbul"></textarea>
+                            <small class="text-muted">Lütfen tam ve doğru adres bilgilerinizi giriniz.</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="telefonNo" class="form-label">Telefon Numarası</label>
+                            <input type="tel" class="form-control" id="telefonNo" name="telefonNo" required 
+                                   maxlength="10" placeholder="5XX XXX XX XX">
+                            <small class="text-muted">Başında 0 olmadan 10 haneli telefon numaranızı giriniz</small>
+                        </div>
+
+                        <hr class="my-4">
+                        <h5 class="mb-3">Ödeme Bilgileri</h5>
+
+                        <div class="mb-3">
+                            <label for="kartSahibi" class="form-label">Kart Sahibinin Adı</label>
+                            <input type="text" class="form-control" id="kartSahibi" name="OdemeBilgileri.KartSahibi" required 
+                                   placeholder="Kart üzerindeki ismi giriniz">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="kartNumarasi" class="form-label">Kart Numarası</label>
+                            <input type="text" class="form-control" id="kartNumarasi" name="OdemeBilgileri.KartNumarasi" required 
+                                   minlength="16" maxlength="16" placeholder="XXXX XXXX XXXX XXXX">
+                            <small class="text-muted">16 haneli kart numaranızı giriniz (boşluk olmadan)</small>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="sonKullanmaTarihi" class="form-label">Son Kullanma Tarihi</label>
+                                <input type="text" class="form-control" id="sonKullanmaTarihi" name="OdemeBilgileri.SonKullanmaTarihi" required 
+                                       pattern="(0[1-9]|1[0-2])\/([0-9]{2})"
+                                       placeholder="AA/YY" maxlength="5">
+                                <small class="text-muted">Ay ve yıl arasına / işareti koyunuz (Örnek: 02/24)</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="cvv" class="form-label">CVV</label>
+                                <input type="password" class="form-control" id="cvv" name="OdemeBilgileri.CVV" required 
+                                       maxlength="3" placeholder="XXX">
+                                <small class="text-muted">Kartınızın arkasındaki 3 haneli güvenlik kodu</small>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle"></i> Siparişi Onayla ve Öde
+                            </button>
+                            <a asp-controller="Sepet" asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Sepete Dön
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card shadow">
-            <div class="card-header py-3">
-                <h5 class="card-title mb-0">Sepet Özeti</h5>
-            </div>
-            <div class="card-body">
-                <div class="d-flex justify-content-between mb-2">
-                    <span>Ara Toplam:</span>
-                    <span>@ViewBag.AraToplam.ToString("C")</span>
+
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h5 class="mb-0">Sipariş Özeti</h5>
                 </div>
-                <div class="d-flex justify-content-between mb-2">
-                    <span>Kargo:</span>
-                    <span>@ViewBag.KargoUcreti.ToString("C")</span>
-                </div>
-                <hr>
-                <div class="d-flex justify-content-between">
-                    <strong>Toplam:</strong>
-                    <strong>@ViewBag.ToplamTutar.ToString("C")</strong>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Toplam Tutar:</span>
+                        <strong>@ViewBag.ToplamTutar.ToString("C")</strong>
+                    </div>
+                    <hr>
+                    <p class="small text-muted mb-0">
+                        Siparişinizi onayladıktan sonra sipariş detaylarınızı görüntüleyebilirsiniz.
+                    </p>
                 </div>
             </div>
         </div>

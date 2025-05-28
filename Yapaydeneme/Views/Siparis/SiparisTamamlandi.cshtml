@@ -1,0 +1,68 @@
+@{
+    ViewData["Title"] = "Sipariş Tamamlandı";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0">
+                <div class="card-body text-center py-5">
+                    <div class="mb-4">
+                        <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+                    </div>
+                    <h2 class="card-title mb-4" style="color: var(--flo-dark-pink);">Siparişiniz Başarıyla Oluşturuldu!</h2>
+                    <p class="card-text mb-4" style="font-size: 1.1rem;">
+                        Siparişiniz için teşekkür ederiz. Sipariş numaranız: <strong>@TempData["SiparisNo"]</strong>
+                    </p>
+                    <p class="text-muted mb-4">
+                        Siparişinizin durumunu "Siparişlerim" sayfasından takip edebilirsiniz.
+                    </p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
+                            <i class="bi bi-house-door me-2"></i>Ana Sayfaya Dön
+                        </a>
+                        <a href="@Url.Action("Siparislerim", "Siparis")" class="btn btn-success">
+                            <i class="bi bi-box-seam me-2"></i>Siparişlerim
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .btn {
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(255, 105, 180, 0.2);
+    }
+
+    .btn-primary {
+        background-color: var(--flo-pink);
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: var(--flo-dark-pink);
+    }
+
+    .btn-success {
+        background-color: var(--flo-light-pink);
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: var(--flo-pink);
+    }
+
+    .text-success {
+        color: var(--flo-pink) !important;
+    }
+</style> 

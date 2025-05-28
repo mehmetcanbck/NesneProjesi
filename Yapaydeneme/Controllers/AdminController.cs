@@ -6,7 +6,6 @@ using Yapaydeneme.Models;
 
 namespace Yapaydeneme.Controllers
 {
-  
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,16 +17,20 @@ namespace Yapaydeneme.Controllers
 
         public IActionResult Login()
         {
+            // Zaten admin girişi yapılmışsa dashboard'a yönlendir
+            if (HttpContext.Session.GetString("AdminLogin") == "true")
+            {
+                return RedirectToAction("Dashboard");
+            }
             return View();
         }
 
         [HttpPost]
         public IActionResult Login(string username, string password)
         {
-            // Basit bir admin kontrolü (gerçek uygulamada veritabanından kontrol edilmeli)
+            // Basit bir admin kontrolü
             if (username == "admin" && password == "123")
             {
-                // Session'a admin bilgisini kaydet
                 HttpContext.Session.SetString("AdminLogin", "true");
                 return RedirectToAction("Dashboard");
             }
@@ -62,3 +65,4 @@ namespace Yapaydeneme.Controllers
         }
     }
 } 
+ 

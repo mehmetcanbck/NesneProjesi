@@ -1,0 +1,105 @@
+@model IEnumerable<Yapaydeneme.Models.Siparis>
+@{
+    ViewData["Title"] = "Siparişlerim";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-white py-3">
+            <h4 class="mb-0 text-pink">Siparişlerim</h4>
+        </div>
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info">
+                    Henüz hiç siparişiniz bulunmamaktadır.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sipariş No</th>
+                                <th>Tarih</th>
+                                <th>Tutar</th>
+                                <th>Durum</th>
+                                <th>Adres</th>
+                                <th>Telefon</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var siparis in Model)
+                            {
+                                <tr>
+                                    <td>@siparis.SiparisNo</td>
+                                    <td>@siparis.SiparisTarihi.ToString("dd.MM.yyyy HH:mm")</td>
+                                    <td>@siparis.ToplamTutar.ToString("C")</td>
+                                    <td>
+                                        <span class="badge @(siparis.SiparisDurumu switch {
+                                            "Beklemede" => "bg-warning",
+                                            "Onaylandı" => "bg-info",
+                                            "Hazırlanıyor" => "bg-primary",
+                                            "Kargoda" => "bg-success",
+                                            "Tamamlandı" => "bg-success",
+                                            "İptal Edildi" => "bg-danger",
+                                            _ => "bg-secondary"
+                                        })">
+                                            @siparis.SiparisDurumu
+                                        </span>
+                                    </td>
+                                    <td>@siparis.TeslimatAdresi</td>
+                                    <td>@siparis.TelefonNo</td>
+                                    <td>
+                                        @if (siparis.SiparisDurumu == "Beklemede" || siparis.SiparisDurumu == "Onaylandı")
+                                        {
+                                            <form asp-action="SiparisIptal" asp-route-id="@siparis.Id" method="post" 
+                                                  onsubmit="return confirm('Siparişinizi iptal etmek istediğinizden emin misiniz?');">
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="bi bi-x-circle"></i> İptal Et
+                                                </button>
+                                            </form>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-pink {
+        color: var(--flo-dark-pink);
+    }
+    
+    .badge {
+        padding: 8px 12px;
+        font-weight: 500;
+        font-size: 0.85rem;
+    }
+    
+    .table > :not(caption) > * > * {
+        padding: 1rem;
+    }
+    
+    .table tbody tr:hover {
+        background-color: rgba(255, 105, 180, 0.05);
+    }
+
+    .btn-danger {
+        background-color: var(--flo-dark-pink);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-danger:hover {
+        background-color: var(--flo-pink);
+        transform: translateY(-2px);
+    }
+</style> 

@@ -177,7 +177,7 @@
                             <a asp-controller="Home" asp-action="Detay" asp-route-id="@urun.Id" class="btn btn-primary">Detaylar</a>
                             @if (urun.StokDurumu)
                             {
-                                <form asp-controller="Sepet" asp-action="Index" method="post" class="d-inline">
+                                <form asp-controller="Sepet" asp-action="UrunEkle" method="post" class="d-inline">
                                     <input type="hidden" name="urunId" value="@urun.Id" />
                                     <input type="hidden" name="adet" value="1" />
                                     <button type="submit" class="btn btn-success">Sepete Ekle</button>

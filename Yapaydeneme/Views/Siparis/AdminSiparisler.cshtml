@@ -1,0 +1,91 @@
+@model IEnumerable<Yapaydeneme.Models.Siparis>
+@{
+    ViewData["Title"] = "Sipariş Yönetimi";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h4 class="mb-0">Tüm Siparişler</h4>
+        </div>
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info">
+                    Henüz hiç sipariş bulunmamaktadır.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sipariş No</th>
+                                <th>Müşteri ID</th>
+                                <th>Tutar</th>
+                                <th>Durum</th>
+                                <th>Tarih</th>
+                                <th>Telefon</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var siparis in Model)
+                            {
+                                <tr>
+                                    <td>@siparis.SiparisNo</td>
+                                    <td>@siparis.KullaniciId</td>
+                                    <td>@siparis.ToplamTutar.ToString("C")</td>
+                                    <td>
+                                        <form asp-action="DurumGuncelle" method="post" class="d-flex align-items-center">
+                                            <input type="hidden" name="id" value="@siparis.Id" />
+                                            <select name="durum" class="form-select form-select-sm me-2" style="width: 150px;">
+                                                @{
+                                                    var durumlar = new[] { "Beklemede", "Onaylandı", "Hazırlanıyor", "Kargoda", "Tamamlandı", "İptal Edildi" };
+                                                    foreach (var durum in durumlar)
+                                                    {
+                                                        if (durum == siparis.SiparisDurumu)
+                                                        {
+                                                            <option value="@durum" selected>@durum</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@durum">@durum</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+                                            <button type="submit" class="btn btn-sm btn-primary">
+                                                <i class="bi bi-check"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td>@siparis.SiparisTarihi.ToString("dd.MM.yyyy HH:mm")</td>
+                                    <td>@siparis.TelefonNo</td>
+                                    <td>
+                                        <a asp-action="Detay" asp-route-id="@siparis.Id" class="btn btn-sm btn-info">
+                                            <i class="bi bi-eye"></i> Detay
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Durum değişikliğinde otomatik submit
+        document.querySelectorAll('select[name="durum"]').forEach(select => {
+            select.addEventListener('change', function() {
+                this.closest('form').submit();
+            });
+        });
+    </script>
+} 

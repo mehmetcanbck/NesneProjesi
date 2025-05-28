@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Yapaydeneme.Models
 {
@@ -15,6 +16,7 @@ namespace Yapaydeneme.Models
         [Required(ErrorMessage = "Fiyat zorunludur.")]
         [Range(0, double.MaxValue, ErrorMessage = "Fiyat 0'dan büyük olmalıdır.")]
         [Display(Name = "Fiyat")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Fiyat { get; set; }
 
         [StringLength(500, ErrorMessage = "Açıklama en fazla 500 karakter olabilir.")]

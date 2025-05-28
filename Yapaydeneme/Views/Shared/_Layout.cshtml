@@ -200,10 +200,13 @@
                                 <span class="nav-link">Merhaba, @User.Identity.Name!</span>
                             </li>
                             <li class="nav-item">
-                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                                    <button type="submit" class="btn btn-outline-danger">
-                                        <i class="bi bi-box-arrow-right"></i> Çıkış Yap
-                                    </button>
+                                <a class="btn btn-primary" asp-controller="Siparis" asp-action="Siparislerim">
+                                    <i class="bi bi-box-seam me-1"></i>Siparişlerim
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post">
+                                    <button type="submit" class="btn btn-outline-danger">Çıkış Yap</button>
                                 </form>
                             </li>
                         }
