@@ -1,11 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Yapaydeneme.Models
 {
     public class Urun
-    {
+    { 
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Ürün adı zorunludur.")]
